@@ -6,9 +6,12 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 var db = null;
-var name1 = 'Abhishek Nigam';
-var contact1 = '3528881397';
-var name2, contact2;
+var contacts = [];
+var con = {
+    name: 'Abhishek Nigam',
+    contact: '3528881397'
+}
+contacts.push(con);
 var user = 'Keyur';
 
 angular.module('app', ['ionic', 'ngCordova', 'app.controllers', 'app.routes', 'app.directives', 'app.services', ])
@@ -131,16 +134,9 @@ angular.module('app', ['ionic', 'ngCordova', 'app.controllers', 'app.routes', 'a
         }
 
         function onSuccessHeartRate(v) {
-            //alert(v);
+
             var len = v.length;
-            //$scope.heartData = v;
-            //alert("before heartDiv");
-            //var heartDiv = document.getElementById("heartRate");
-            //alert(JSON.stringify($scope.heartData));
-            //heartDiv.innerHTML = JSON.stringify($scope.heartData);
-            //alert("before parse");
             var hData = parseHeartData(v);
-            //alert(hData);
             addHeartData(hData);
         }
 

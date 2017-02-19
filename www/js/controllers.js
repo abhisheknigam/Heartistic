@@ -75,22 +75,17 @@ angular.module('app.controllers', [])
             }, function(error) {
                 console.log('transaction error: ' + error.message);
             }, function() {
-                //alert('transaction ok');
                 $scope.updateChart();
             });
         }
 
         $scope.click = function() {
-            alert("clicked");
             setInterval(getData, 2000);
         }
 
 
         //var dps = []; // dataPoints 
         $scope.chart = new CanvasJS.Chart("chartContainer", {
-            title: {
-                text: "Live Random Data"
-            },
             axisY: {
                 viewportMinimum: 30,
                 viewportMaximum: 220
@@ -305,7 +300,7 @@ angular.module('app.controllers', [])
 
 
         setInterval(getCurrentHeartState, 2000);
-
+        setTimeout($scope.click, 500);
     }
 ])
 

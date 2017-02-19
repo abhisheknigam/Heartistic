@@ -8,8 +8,8 @@
 var db = null;
 var contacts = [];
 var con = {
-  name :'Abhishek Nigam',
-  contact: '3528881397'
+    name: 'Abhishek Nigam',
+    contact: '3528881397'
 }
 contacts.push(con);
 var user = 'Keyur';
@@ -134,16 +134,9 @@ angular.module('app', ['ionic', 'ngCordova', 'app.controllers', 'app.routes', 'a
         }
 
         function onSuccessHeartRate(v) {
-            //alert(v);
+
             var len = v.length;
-            //$scope.heartData = v;
-            //alert("before heartDiv");
-            //var heartDiv = document.getElementById("heartRate");
-            //alert(JSON.stringify($scope.heartData));
-            //heartDiv.innerHTML = JSON.stringify($scope.heartData);
-            //alert("before parse");
             var hData = parseHeartData(v);
-            //alert(hData);
             addHeartData(hData);
         }
 
