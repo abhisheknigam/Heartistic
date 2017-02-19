@@ -131,7 +131,14 @@ angular.module('app.controllers', [])
                 tx.executeSql(query, [], function(tx, res) {
                     console.log(res.rows);
                     //alert("currentRate:" + JSON.stringify(res.rows.item(0)));
-                    currentRate = res.rows.item(0);
+                    //currentRate = res.rows.item(0);
+                    currentRate = {
+                        timestamp:142776756577989,
+                        heartRate:Math.random() * 20,
+                        fullDateString:'jfhagj',
+                        stepCount:25,
+                        isResting:1
+                    }
                     currentState = getCurrentState(currentRate);
                 }, function(err) {
                     console.error(err);
@@ -142,7 +149,7 @@ angular.module('app.controllers', [])
         function getCurrentState(currentRate) {
             var currentState;
             var getCondition = "Select * from heartRangeData where start_age<=24 and end_age>=24 and is_rest=" + currentRate.isResting + " and max_heart_rate>=" + currentRate.heartRate + " and min_heart_rate<=" + currentRate.heartRate + ";";
-            // alert(getCondition);
+            //alert(getCondition);
             db.transaction(function(tx) {
 
                 tx.executeSql(getCondition, [], function(tx, data) {
@@ -152,7 +159,12 @@ angular.module('app.controllers', [])
                     //if data ==null as in if the heart rate is beyond the max range
                     //then it needs special attention
                     if (data.rows == null || data.rows.length == 0) {
-                        return 'Need Attention';
+                        $scope.sendSms(currentRate.heartRate);
+                            output = 'Need Attention';
+                            document.getElementById("best").addClass("blur-class");
+                            document.getElementById("healthy").addClass("blur-class");
+                            document.getElementById("normal").addClass("blur-class");
+                            document.getElementById("need-attention").removeClass("blur-class");
                     }
                     currentState = data.rows.item(0);
                     getAvgRest(currentRate, currentState);
@@ -233,28 +245,28 @@ angular.module('app.controllers', [])
                             //write function for calling Sending SMS
                             $scope.sendSms(currentRate.heartRate);
                             output = 'Need Attention';
-                            document.getElementById("best").addClass("blur-class");
-                            document.getElementById("healthy").addClass("blur-class");
-                            document.getElementById("normal").addClass("blur-class");
-                            document.getElementById("need-attention").removeClass("blur-class");
+                            document.getElementById("best").className = "blur-class";
+                            document.getElementById("healthy").className = "blur-class";
+                            document.getElementById("normal").className = "blur-class";
+                            document.getElementById("need-attention").className = "";
                         } else if (currentState.state_no < 4) {
                             output = 'Good - Healthy';
-                            document.getElementById("best").addClass("blur-class");
-                            document.getElementById("healthy").removeClass("blur-class");
-                            document.getElementById("normal").addClass("blur-class");
-                            document.getElementById("need-attention").addClass("blur-class");
+                            document.getElementById("best").className = "";
+                            document.getElementById("healthy").className = "blur-class";
+                            document.getElementById("normal").className = "blur-class";
+                            document.getElementById("need-attention").className = "blur-class";
                         } else if (currentState.state_no < 6) {
                             output = 'Normal';
-                            document.getElementById("best").addClass("blur-class");
-                            document.getElementById("healthy").addClass("blur-class");
-                            document.getElementById("normal").removeClass("blur-class");
-                            document.getElementById("need-attention").addClass("blur-class");
+                            document.getElementById("best").className = "blur-class";
+                            document.getElementById("healthy").className = "";
+                            document.getElementById("normal").className = "blur-class";
+                            document.getElementById("need-attention").className = "blur-class";
                         } else {
                             output = 'Below - Normal';
-                            document.getElementById("best").addClass("blur-class");
-                            document.getElementById("healthy").addClass("blur-class");
-                            document.getElementById("normal").removeClass("blur-class");
-                            document.getElementById("need-attention").addClass("blur-class");
+                            document.getElementById("best").className = "blur-class";
+                            document.getElementById("healthy").className = "blur-class";
+                            document.getElementById("normal").className = "";
+                            document.getElementById("need-attention").className = "blur-class";
                         }
                     }
                     //alert(output);
@@ -274,12 +286,12 @@ angular.module('app.controllers', [])
                 }
             };
             alert("in sms");
-            var smsContent = user + ' may have some health issue as its pulse rate currently is ' + currentRate.heartRate + ' which needs attention. Please get in touch as soon as possible.\n Regards Heartistic';
+            var smsContent = user + ' may have some health issue as its pulse rate currently is ' + heartRate + ' which needs attention. Please get in touch as soon as possible.\n Regards Heartistic';
             $cordovaSms
-                .send('' + contact1, smsContent, options)
+                .send(contacts[0].contact, smsContent, options)
                 .then(function() {
                     // Success! SMS was sent
-                    alert('SMS to ' + name1 + ' sent successfully.');
+                    alert('SMS to '+contacts[0].name+' sent successfully.');
                 }, function(error) {
                     // An error occurred
                     alert('Unfortunately we could not send SMS to ' + name1);
@@ -287,48 +299,47 @@ angular.module('app.controllers', [])
 
 
             $cordovaSms
-                .send('' + contact2, smsContent, options)
+                .send(contacts[1].contact, smsContent, options)
                 .then(function() {
                     // Success! SMS was sent
-                    alert('SMS to ' + name2 + ' sent successfully.');
+                    alert('SMS to ' + contacts[1].name + ' sent successfully.');
                 }, function(error) {
                     // An error occurred
-                    alert('Unfortunately we could not send SMS to ' + name2);
+                    alert('Unfortunately we could not send SMS to ' + contacts[1].name);
                 });
         }
 
-
+        
         setInterval(getCurrentHeartState, 2000);
 
-
-        // generates first set of dataPoints
-        //updateChart(dataLength); 
-
-        // update chart after specified time. 
-        //    setInterval(function(){updateChart()}, updateInterval); 
-        // }
-
-    }
-])
-
+    }])
+       
 .controller('healthTipsCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function($scope, $stateParams) {
+    function ($scope, $stateParams) {
 
 
-    }
-])
-
-.controller('emergencyContactCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+    }])
+       
+    .controller('emergencyContactCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function($scope, $stateParams) {
-        $scope.addContact = function() {
-            name2 = $scope.name2;
-            contact2 = $scope.contact2;
-            console.log("name and contact:" + name2 + "  " + contact2);
+    function ($scope, $stateParams) {
+        console.log(contacts);
+        $scope.items = contacts;
+    ;
+        $scope.addContact = function(){
+            con = {
+              name :document.getElementById("name2").value,
+              contact: document.getElementById("contact2").value
+            }
+            contacts.push(con);
+            $scope.items = contacts;
+            console.log("name and contact:"+JSON.stringify(contacts));
+            document.getElementById("name2").value='';
+            document.getElementById("contact2").value='';
+            
         }
 
-    }
-])
+}])
