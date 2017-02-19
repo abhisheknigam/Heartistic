@@ -6,9 +6,12 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 var db = null;
-var name1 = 'Abhishek Nigam';
-var contact1 = '3528881397';
-var name2, contact2;
+var contacts = [];
+var con = {
+  name :'Abhishek Nigam',
+  contact: '3528881397'
+}
+contacts.push(con);
 var user = 'Keyur';
 
 angular.module('app', ['ionic', 'ngCordova', 'app.controllers', 'app.routes', 'app.directives', 'app.services', ])
