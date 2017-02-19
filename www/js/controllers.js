@@ -45,6 +45,7 @@ angular.module('app.controllers', [])
         $scope.Canvas = CanvasJS;
         $scope.dps = [];
         $scope.x = 1;
+        $scope.divFactor = 1;
 
         function getData() {
             db.transaction(function(tx) {
@@ -58,7 +59,7 @@ angular.module('app.controllers', [])
 
                             dps.push({
                                 x: $scope.x++,
-                                y: resultSet.rows.item(x).heartRate
+                                y: resultSet.rows.item(x).heartRate / $scope.divFactor
                             });
 
                         }
@@ -90,35 +91,28 @@ angular.module('app.controllers', [])
             title: {
                 text: "Live Random Data"
             },
+            axisY: {
+                viewportMinimum: 30,
+                viewportMaximum: 220
+            },
             data: [{
                 type: "line",
                 dataPoints: $scope.dps
             }]
         });
 
+        $scope.anamoly = function() {
+            $scope.divFactor += 1;
+        }
+        $scope.stopAnamoly = function() {
+            $scope.divFactor -= 1;
+        }
 
 
         var dataLength = 50; // number of dataPoints visible at any point
 
         $scope.updateChart = function() {
-            //count = count || 1;
-            // count is number of times loop runs to generate random dataPoints.
-
-            // for (var j = 0; j < count; j++) { 
-            //   yVal = yVal +  Math.round(5 + Math.random() *(-5-5));
-            //   dps.push({
-            //     x: xVal,
-            //     y: yVal
-            //   });
-            //   xVal++;
-            // };
-            // if (dps.length > dataLength)
-            // {
-            //   dps.shift();        
-            // }
-
             $scope.chart.render();
-
         };
 
         function getCurrentHeartState() {
@@ -131,14 +125,14 @@ angular.module('app.controllers', [])
                 tx.executeSql(query, [], function(tx, res) {
                     console.log(res.rows);
                     //alert("currentRate:" + JSON.stringify(res.rows.item(0)));
-                    //currentRate = res.rows.item(0);
-                    currentRate = {
-                        timestamp:142776756577989,
-                        heartRate:Math.random() * 20,
-                        fullDateString:'jfhagj',
-                        stepCount:25,
-                        isResting:1
-                    }
+                    currentRate = res.rows.item(0);
+                    // currentRate = {
+                    //     timestamp: 142776756577989,
+                    //     heartRate: Math.random() * 20,
+                    //     fullDateString: 'jfhagj',
+                    //     stepCount: 25,
+                    //     isResting: 1
+                    // }
                     currentState = getCurrentState(currentRate);
                 }, function(err) {
                     console.error(err);
@@ -160,11 +154,11 @@ angular.module('app.controllers', [])
                     //then it needs special attention
                     if (data.rows == null || data.rows.length == 0) {
                         $scope.sendSms(currentRate.heartRate);
-                            output = 'Need Attention';
-                            document.getElementById("best").addClass("blur-class");
-                            document.getElementById("healthy").addClass("blur-class");
-                            document.getElementById("normal").addClass("blur-class");
-                            document.getElementById("need-attention").removeClass("blur-class");
+                        output = 'Need Attention';
+                        document.getElementById("best").addClass("blur-class");
+                        document.getElementById("healthy").addClass("blur-class");
+                        document.getElementById("normal").addClass("blur-class");
+                        document.getElementById("need-attention").removeClass("blur-class");
                     }
                     currentState = data.rows.item(0);
                     getAvgRest(currentRate, currentState);
@@ -291,7 +285,7 @@ angular.module('app.controllers', [])
                 .send(contacts[0].contact, smsContent, options)
                 .then(function() {
                     // Success! SMS was sent
-                    alert('SMS to '+contacts[0].name+' sent successfully.');
+                    alert('SMS to ' + contacts[0].name + ' sent successfully.');
                 }, function(error) {
                     // An error occurred
                     alert('Unfortunately we could not send SMS to ' + name1);
@@ -309,37 +303,39 @@ angular.module('app.controllers', [])
                 });
         }
 
-        
+
         setInterval(getCurrentHeartState, 2000);
 
-    }])
-       
+    }
+])
+
 .controller('healthTipsCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, $stateParams) {
+    function($scope, $stateParams) {
 
 
-    }])
-       
-    .controller('emergencyContactCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+    }
+])
+
+.controller('emergencyContactCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, $stateParams) {
+    function($scope, $stateParams) {
         console.log(contacts);
-        $scope.items = contacts;
-    ;
-        $scope.addContact = function(){
+        $scope.items = contacts;;
+        $scope.addContact = function() {
             con = {
-              name :document.getElementById("name2").value,
-              contact: document.getElementById("contact2").value
+                name: document.getElementById("name2").value,
+                contact: document.getElementById("contact2").value
             }
             contacts.push(con);
             $scope.items = contacts;
-            console.log("name and contact:"+JSON.stringify(contacts));
-            document.getElementById("name2").value='';
-            document.getElementById("contact2").value='';
-            
+            console.log("name and contact:" + JSON.stringify(contacts));
+            document.getElementById("name2").value = '';
+            document.getElementById("contact2").value = '';
+
         }
 
-}])
+    }
+])

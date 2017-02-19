@@ -45,6 +45,7 @@ angular.module('app.controllers', [])
         $scope.Canvas = CanvasJS;
         $scope.dps = [];
         $scope.x = 1;
+        $scope.divFactor = 1;
 
         function getData() {
             db.transaction(function(tx) {
@@ -58,7 +59,7 @@ angular.module('app.controllers', [])
 
                             dps.push({
                                 x: $scope.x++,
-                                y: resultSet.rows.item(x).heartRate
+                                y: resultSet.rows.item(x).heartRate / $scope.divFactor
                             });
 
                         }
@@ -80,15 +81,16 @@ angular.module('app.controllers', [])
         }
 
         $scope.click = function() {
-            alert("clicked");
+            //alert("clicked");
             setInterval(getData, 2000);
         }
 
 
         //var dps = []; // dataPoints 
         $scope.chart = new CanvasJS.Chart("chartContainer", {
-            title: {
-                text: "Live Random Data"
+            axisY: {
+                viewportMinimum: 30,
+                viewportMaximum: 220
             },
             data: [{
                 type: "line",
@@ -96,7 +98,13 @@ angular.module('app.controllers', [])
             }]
         });
 
+        $scope.anamoly = function() {
+            $scope.divFactor += 1;
+        }
+        $scope.stopAnamoly = function() {
 
+            $scope.divFactor -= 1;
+        }
 
         var dataLength = 50; // number of dataPoints visible at any point
 
@@ -299,7 +307,7 @@ angular.module('app.controllers', [])
 
 
         setInterval(getCurrentHeartState, 2000);
-
+        setTimeout($scope.click, 500);
 
         // generates first set of dataPoints
         //updateChart(dataLength); 
