@@ -1,4 +1,4 @@
-# Heartistic - Selected Best 10 Hacks by NYC Technical.ly Newspaper
+# Heartistic - Featured In Top 10 Hacks by NYC Technical.ly Newspaper
 Detects aberrant heart conditions and helps prevent them.
 NYU Hackathon - https://devpost.com/software/heartistic
 
