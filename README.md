@@ -2,6 +2,11 @@
 Detects aberrant heart conditions and helps prevent them.
 NYU Hackathon - https://devpost.com/software/heartistic
 
+![Alt text](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/477/886/datas/gallery.jpg)
+![Alt text](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/477/893/datas/gallery.jpg)
+![Alt text](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/477/892/datas/gallery.jpg)
+![Alt text](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/477/891/datas/gallery.jpg)
+
 
 # Inspiration
 "More than 5 Million people in USA alone suffer from some kind of Heart Disease". This fact inspired us to create something using current technology inorder to assist these people regaining a health Heart life.The number just gives a fact of people suffering, but there is also a fact that "1 in 4 deaths is due to heart diseases in USA" . The numbers are shocking but true.
