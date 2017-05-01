@@ -3,7 +3,9 @@ Detects aberrant heart conditions and helps prevent them.
 NYU Hackathon - https://devpost.com/software/heartistic
 
 ![Alt text](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/477/886/datas/gallery.jpg)
+![Alt text](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/477/884/datas/gallery.jpg)
 ![Alt text](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/477/893/datas/gallery.jpg)
+![Alt text](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/477/888/datas/gallery.jpg)
 ![Alt text](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/477/892/datas/gallery.jpg)
 ![Alt text](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/477/891/datas/gallery.jpg)
 
